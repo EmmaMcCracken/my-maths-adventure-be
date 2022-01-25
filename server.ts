@@ -31,8 +31,9 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-  const dbres = await client.query('select userid, username, preferredname, age, qualification from users');
-  res.json(dbres.rows);
+  try{const dbres = await client.query('select userid, username, preferredname, age, qualification from users');
+  res.status(200).json({message: "success", users: dbres.rows});}
+  catch(error){console.error(error)}
 });
 
 app.post("/users", async (req, res) => {
@@ -48,7 +49,7 @@ app.post("/users", async (req, res) => {
     if (dbres.rows.length > 0) {
       res.status(200).json({
         status: "success",
-        resourceAdded: dbres.rows[0],
+        userAdded: dbres.rows[0],
       });
     }
 
@@ -60,7 +61,6 @@ app.post("/users", async (req, res) => {
     }
 
   } catch (error) {
-    console.log("error: ", error);
     console.error(error);
     if (error.code === 23505 || error.code === "23505") {
       res.status(403).json({
