@@ -27,9 +27,51 @@ const client = new Client(dbConfig);
 client.connect();
 
 app.get("/", async (req, res) => {
-  const dbres = await client.query('select * from categories');
+  res.json({ Message: "Welcome to the my-maths-adventure API.", Documentation: "link to API documentation will be given here" });
+});
+
+app.get("/users", async (req, res) => {
+  const dbres = await client.query('select userid, username, preferredname, age, qualification from users');
   res.json(dbres.rows);
 });
+
+app.post("/users", async (req, res) => {
+  try {
+    const { username, emailaddress, preferredname, age, qualification
+    } = req.body;
+    const dbres = await client.query(
+      "INSERT INTO users (username, emailaddress, preferredname, age, qualification) VALUES ($1,$2,$3,$4,$5) returning *",
+      [
+        username, emailaddress, preferredname, age, qualification
+      ]
+    );
+    if (dbres.rows.length > 0) {
+      res.status(200).json({
+        status: "success",
+        resourceAdded: dbres.rows[0],
+      });
+    }
+
+    if (dbres.rows.length === 0) {
+      res.status(200).json({
+        status: "success",
+        message: "no user added",
+      });
+    }
+
+  } catch (error) {
+    console.log("error: ", error);
+    console.error(error);
+    if (error.code === 23505 || error.code === "23505") {
+      res.status(403).json({
+        status: "failed",
+        message:
+          "user could not be added: the username or emailaddress already exists",
+      });
+    }
+  }
+})
+  ;
 
 
 //Start the server on the given port
