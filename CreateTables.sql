@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS lessons CASCADE;
 DROP TABLE IF EXISTS lessonparticipants;
 DROP TABLE IF EXISTS lessonreflections;
+DROP TABLE IF EXISTS lessoncounts;
+
 
 CREATE TABLE users (
   userid SERIAL PRIMARY KEY,
@@ -38,6 +40,12 @@ CREATE TABLE lessonparticipants (
     
    );
 
+  CREATE TABLE lessoncounts AS
+  SELECT lessons.lessonid, title, description, time, COUNT(lessonparticipants.lessonid)::INT AS participants 
+  FROM lessons JOIN lessonparticipants
+  ON lessons.lessonid=lessonparticipants.lessonid
+  GROUP BY lessons.lessonid;
+
 -- INSERT INTO users(username,emailaddress,age,qualification,preferredname)
 -- VALUES ('MathematicsForever','ember.emma.emmer@gmail.com',25,'N/A', 'Emma');
 
@@ -46,3 +54,9 @@ CREATE TABLE lessonparticipants (
 
 -- INSERT INTO lessonparticipants (lessonid,userid)
 -- VALUES (1,2);
+
+-- INSERT INTO lessonparticipants (lessonid,userid)
+-- VALUES (1,2);
+
+-- INSERT INTO lessonparticipants (lessonid,userid)
+-- VALUES (1,1);

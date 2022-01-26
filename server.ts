@@ -81,7 +81,7 @@ app.get("/lessons/:userid", async (req, res) => {
   const userid = req.params.userid;
   try {
     const dbres = await client.query(
-      "SELECT lessons.lessonid,time,title,description FROM lessons join lessonparticipants on lessons.lessonid=lessonparticipants.lessonid WHERE userid=$1",
+      "select lessoncounts.lessonid,title,description,time,participants from lessoncounts join lessonparticipants on lessoncounts.lessonid=lessonparticipants.lessonid where userid=$1",
       [userid]
     );
     res.status(200).json({ message: "success", lessons: dbres.rows });
@@ -94,7 +94,7 @@ app.get("/numberoflessonparticipants/:lessonid", async (req, res) => {
   const lessonid = req.params.lessonid;
   try {
     const dbres = await client.query(
-      "SELECT count(*) FROM lessons JOIN lessonparticipants ON lessons.lessonid=lessonparticipants.lessonid WHERE lessons.lessonid=$1",
+      "SELECT count(*)::int FROM lessons JOIN lessonparticipants ON lessons.lessonid=lessonparticipants.lessonid WHERE lessons.lessonid=$1",
       [lessonid]
     );
     res.status(200).json({ message: "success", count: dbres.rows[0].count });
