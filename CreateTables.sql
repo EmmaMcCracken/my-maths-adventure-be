@@ -41,3 +41,8 @@ CREATE TABLE lessonparticipants (
 -- INSERT INTO users(username,emailaddress,age,qualification,preferredname)
 -- VALUES ('MathematicsForever','ember.emma.emmer@gmail.com',25,'N/A', 'Emma');
 
+-- INSERT INTO lessons(time,title,description)
+-- VALUES ('2022-01-26 18:00','First Lesson', 'We will complete a past paper together');
+
+-- INSERT INTO lessonparticipants (lessonid,userid)
+-- VALUES (1,2);
