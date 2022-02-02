@@ -1,13 +1,3 @@
-
-
-
-
-
-
-
-
-
-
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS lessons CASCADE;
 DROP TABLE IF EXISTS lessonparticipants;
@@ -84,3 +74,4 @@ GROUP BY lessons.lessonid;
 
 
 select lessoncounts.lessonid,title,description,time,participants from lessoncounts join lessonparticipants on lessoncounts.lessonid=lessonparticipants.lessonid where userid=1;
+
